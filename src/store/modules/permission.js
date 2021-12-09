@@ -56,6 +56,7 @@ const actions = {
         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
       }
       commit('SET_ROUTES', accessedRoutes)
+      console.log(accessedRoutes, "store/permmison");
       resolve(accessedRoutes)
     })
   }

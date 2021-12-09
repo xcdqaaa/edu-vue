@@ -5,26 +5,31 @@ import { resetRouter } from '@/router'
 const getDefaultState = () => {
   return {
     token: getToken(),
-    name: '',
-    avatar: ''
+    name: "",
+    avatar: "",
+    introduction: "",
+    roles: [],
   }
 }
 
 const state = getDefaultState()
 
 const mutations = {
-  RESET_STATE: (state) => {
-    Object.assign(state, getDefaultState())
-  },
   SET_TOKEN: (state, token) => {
-    state.token = token
+    state.token = token;
+  },
+  SET_INTRODUCTION: (state, introduction) => {
+    state.introduction = introduction;
   },
   SET_NAME: (state, name) => {
-    state.name = name
+    state.name = name;
   },
   SET_AVATAR: (state, avatar) => {
-    state.avatar = avatar
-  }
+    state.avatar = avatar;
+  },
+  SET_ROLES: (state, roles) => {
+    state.roles = roles;
+  },
 }
 
 const actions = {
@@ -34,10 +39,10 @@ const actions = {
     return new Promise((resolve, reject) => {
       login({ "account": username.trim(), password: password }).then(response => {
         console.log(response, "111");
-        const { obj } = response
-        console.log(obj);
-        commit('SET_TOKEN', obj)
-        setToken(obj)
+        const { data } = response
+        console.log(data);
+        commit('SET_TOKEN', data)
+        setToken(data)
         resolve()
       }).catch(error => {
         reject(error)
@@ -49,17 +54,23 @@ const actions = {
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { obj } = response
+        const { data } = response;
 
-        if (!obj) {
+        console.log(response, data);
+
+        if (!data) {
           return reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = obj
+        const { roles, name, avatar, introduction } = data
+        // avatar = "@/assets/avatar.png";
 
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        resolve(obj)
+        commit("SET_ROLES", roles);
+        commit("SET_NAME", name);
+        commit("SET_AVATAR", avatar);
+        commit("SET_INTRODUCTION", introduction);
+        console.log(data, '3333');
+        resolve(data)
       }).catch(error => {
         reject(error)
       })
