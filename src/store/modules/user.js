@@ -30,6 +30,10 @@ const mutations = {
   SET_ROLES: (state, roles) => {
     state.roles = roles;
   },
+  RESET_STATE: (state, a) => {
+    console.log(state, 111);
+    console.log(a, 111);
+  }
 }
 
 const actions = {
