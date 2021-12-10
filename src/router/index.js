@@ -56,7 +56,7 @@ export const asyncRoutes = [
         path: "/user/students",
         component: () => import("@/views/admin/user/UserStudent"),
         meta: {
-          title: "管理用户",
+          title: "学生用户",
         },
       },
     ],
