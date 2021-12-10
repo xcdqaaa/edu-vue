@@ -155,8 +155,8 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- style="margin-top:20px;" -->
     <el-pagination
-    	style="margin-top:20px;"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page="queryInfo.pageNumber"
@@ -312,17 +312,6 @@ export default {
 
 <style scoped>
 
-.el-card {
-    margin: 16px 0;
-  box-shadow: 0 1px 1px rgb(0, 8, 10, 0.15);
-	 /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) */
-}
-.el-table{
-  box-shadow: 0 1px 1px rgb(0, 8, 10, 0.15);
-	 /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) */
-}
-/* .el-pagination{
-	  box-shadow: 0 1px 1px rgb(0, 8, 10, 0.15) !important;
-} */
+
 
 </style>

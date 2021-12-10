@@ -16,6 +16,18 @@ export default {
   }
 }
 </script>
+<style>
+.el-card {
+    margin: 16px 0;
+  box-shadow: 0 1px 1px rgb(0, 8, 10, 0.15);
+	 /* box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1) */
+}
+
+.el-pagination{
+  margin-top: 20px;
+	  /* box-shadow: 0 1px 1px rgb(0, 8, 10, 0.15) !important; */
+}
+</style>
 
 <style scoped>
 .app-main {
@@ -26,6 +38,7 @@ export default {
   position: relative;
   overflow: hidden;
   background-color: #eaedf1;
+  background-color: #f8fbfdc5;
 }
 .fixed-header+.app-main {
   padding-top: 50px;

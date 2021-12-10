@@ -16,21 +16,16 @@
             ></el-button>
           </el-input>
         </el-col>
-
-        <!-- <el-col :span="4">
-          <el-button type="primary" @click="addDialogVisible = true"
-            >添加用户</el-button
-          >
-        </el-col> -->
       </el-row>
     </el-card>
 
     <el-table :data="teacherList" border stripe>
       <el-table-column type="selection" width="46"> </el-table-column>
       <!-- <el-table-column type="index"></el-table-column> -->
-      <el-table-column label="工号" prop="tid" sortable></el-table-column>
-      <el-table-column label="姓名" prop="tname"></el-table-column>
-      <el-table-column label="学院" prop="tcollege"></el-table-column>
+      <el-table-column label="学科名" prop="bname" sortable></el-table-column>
+      <el-table-column label="学分" prop="bcrs"></el-table-column>
+      <el-table-column label="学院" prop="bcollege"></el-table-column>
+      <el-table-column label="设立学期" prop="bperiod"></el-table-column>
       <el-table-column label="操作">
         
       </el-table-column>
@@ -69,7 +64,7 @@ export default {
   methods: {
     // 获取所有学生
     getTeacherList() {
-      this.postRequest("teacher/teachers", this.queryInfo).then(response => {
+      this.postRequest("/course/subjects", this.queryInfo).then(response => {
         // console.log(1111,data.obj.records);
         const {data} = response
         this.teacherList = data.records;

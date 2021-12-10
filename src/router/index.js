@@ -145,9 +145,9 @@ export const asyncRoutes = [
     },
     children: [
       {
-        name: "CourseList",
+        name: "SubjectList",
         path: "/course/courses",
-        component: () => import("@/views/admin/course/CourseList"),
+        component: () => import("@/views/admin/course/SubjectList"),
         meta: {
           title: "学科列表",
         },
