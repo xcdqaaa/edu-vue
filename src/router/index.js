@@ -26,6 +26,34 @@ import Layout from "@/layout";
  */
 export const asyncRoutes = [
   {
+    path: "/",
+    component: Layout,
+    redirect: "/dashboard",
+
+    children: [
+      {
+        path: "/dashboard-admin",
+        name: "DashboardAdmin",
+        component: () => import("@/views/dashboard/admin"),
+        meta: { title: "首页", icon: "dashboard", roles: ['admin'] },
+      },
+      {
+        path: "/dashboard-student",
+        name: "DashboardStudent",
+        component: () => import("@/views/dashboard/student"),
+        meta: { title: "首页", icon: "dashboard", roles: ['student'] },
+      },
+      {
+        path: "/dashboard-teacher",
+        name: "DashboardTeacher",
+        component: () => import("@/views/dashboard/teacher"),
+        meta: { title: "首页", icon: "dashboard", roles: ['teacher'] },
+      },
+    ],
+  },
+
+
+  {
     name: "User",
     path: "/user",
     component: Layout,
@@ -211,20 +239,13 @@ export const constantRoutes = [
     component: () => import("@/views/404"),
     hidden: true,
   },
-
   {
-    path: "/",
-    component: Layout,
-    redirect: "/dashboard",
-    children: [
-      {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/dashboard/index"),
-        meta: { title: "首页", icon: "dashboard" },
-      },
-    ],
+    path: "/dashboard",
+    // name: "Dashboard",
+    component: () => import("@/views/dashboard/index"),
+    meta: { title: "首页", icon: "dashboard", }, hidden: true
   },
+
 ];
 
 const createRouter = () =>
