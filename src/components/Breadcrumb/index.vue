@@ -51,7 +51,7 @@ export default {
           ].concat(matched);
         } else {
           matched = [
-            { path: "/dashboard-user", meta: { title: "学生首页" } },
+            { path: "/dashboard-student", meta: { title: "学生首页" } },
           ].concat(matched);
         }
       }

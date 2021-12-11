@@ -109,8 +109,9 @@
         >
       </span>
     </el-dialog>
-    <el-table :data="userList" border stripe>
-      <el-table-column type="selection" width="46" align="center"> </el-table-column>
+    <el-table :data="userList" border>
+      <el-table-column type="selection" width="46" align="center">
+      </el-table-column>
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column label="账号" prop="account" sortable></el-table-column>
       <el-table-column label="密码" prop="password"></el-table-column>
@@ -170,7 +171,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import request from "@/utils/request";
 export default {
   created() {
     this.getUserList();
@@ -191,7 +192,7 @@ export default {
         account: "",
         password: "123456",
         perm: 2,
-        name:""
+        name: "",
       },
       updateDialogVisible: false,
       updateForm: {
@@ -221,8 +222,8 @@ export default {
     // 获取所有用户
     getUserList() {
       this.postRequest("user/admins", this.queryInfo).then((response) => {
-          const {data} = response;
-        console.log(1111,data);
+        const { data } = response;
+        console.log(1111, data);
         this.userList = data.records;
         this.total = data.total;
         // console.log(2222,data.obj.records);
@@ -262,27 +263,26 @@ export default {
       });
     },
 
-    showUpdateUser(id){
+    showUpdateUser(id) {
       console.log(id);
       this.getUser(id);
       console.log(id);
-      this.updateDialogVisible=true;
-      
+      this.updateDialogVisible = true;
     },
-    doUpdateUser(){
-      this.postRequest("/updateuser",this.updateUser).then((data)=>{
-        console.log("/updateuser",data);
-        this.updateUser={};
-        this.updateDialogVisible=false;
+    doUpdateUser() {
+      this.postRequest("/updateuser", this.updateUser).then((data) => {
+        console.log("/updateuser", data);
+        this.updateUser = {};
+        this.updateDialogVisible = false;
         this.getUserList();
-      })
+      });
     },
     getUser(id) {
-      this.getRequest("/getuser?id="+id).then((data) => {
+      this.getRequest("/getuser?id=" + id).then((data) => {
         console.log("/getuser", data);
         // this.addDialogVisible = false;
         // this.getUserList();
-        this.updateUser=data.obj;
+        this.updateUser = data.obj;
       });
     },
     // 删除用户
@@ -291,13 +291,12 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(() => {
-          this.deleteRequest("user?id="+id).then(
-            data =>{
-              console.log(data);
-              this.getUserList();
-            }
-          )
+      })
+        .then(() => {
+          this.deleteRequest("user?id=" + id).then((data) => {
+            console.log(data);
+            this.getUserList();
+          });
         })
         .catch(() => {
           this.$message({
@@ -311,7 +310,4 @@ export default {
 </script>
 
 <style scoped>
-
-
-
 </style>

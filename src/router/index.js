@@ -52,7 +52,7 @@ export const asyncRoutes = [
     ],
   },
 
-
+  // admin user
   {
     name: "User",
     path: "/user",
@@ -61,6 +61,7 @@ export const asyncRoutes = [
     meta: {
       title: "用户管理",
       icon: "el-icon-user",
+      roles: ['admin']
     },
     children: [
       {
@@ -69,6 +70,7 @@ export const asyncRoutes = [
         component: () => import("@/views/admin/user/UserAdmin"),
         meta: {
           title: "管理用户",
+          roles: ['admin']
         },
       },
       {
@@ -77,6 +79,7 @@ export const asyncRoutes = [
         component: () => import("@/views/admin/user/UserTeacher"),
         meta: {
           title: "教师用户",
+          roles: ['admin']
         },
       },
       {
@@ -85,24 +88,26 @@ export const asyncRoutes = [
         component: () => import("@/views/admin/user/UserStudent"),
         meta: {
           title: "学生用户",
+          roles: ['admin']
         },
       },
     ],
   },
-
+  // admin teacher
   {
-    name: "Teacher",
-    path: "/teacher",
+    name: "Teachers",
+    path: "/teachers",
     component: Layout,
-    redirect: "/teacher/list",
+    redirect: "/teachers/list",
     meta: {
       title: "教师管理",
       icon: "el-icon-takeaway-box",
+      roles: ['admin']
     },
     children: [
       {
         name: "TeacherList",
-        path: "/teacher/list",
+        path: "/teachers/list",
         component: () => import("@/views/admin/teacher/TeacherList"),
         meta: {
           title: "教师列表",
@@ -126,19 +131,21 @@ export const asyncRoutes = [
       },
     ],
   },
+  // student
   {
     name: "Student",
-    path: "/student",
+    path: "/students",
     component: Layout,
-    redirect: "/student/list",
+    redirect: "/students/list",
     meta: {
       title: "学生管理",
       icon: "el-icon-reading",
+      roles: ['admin']
     },
     children: [
       {
         name: "StudentList",
-        path: "/student/list",
+        path: "/students/list",
         component: () => import("@/views/admin/student/StudentList"),
         meta: {
           title: "学生列表",
@@ -154,7 +161,7 @@ export const asyncRoutes = [
       },
       {
         name: "StudentLesson",
-        path: "/student/lesson",
+        path: "/students/lesson",
         component: () => import("@/views/admin/student/StudentLesson"),
         meta: {
           title: "学生课程",
@@ -162,19 +169,21 @@ export const asyncRoutes = [
       },
     ],
   },
+  // course
   {
-    name: "Course",
-    path: "/course",
+    name: "Courses",
+    path: "/courses",
     component: Layout,
-    redirect: "/course/courses",
+    redirect: "/courses/subjects",
     meta: {
       title: "课程管理",
       icon: "el-icon-date",
+      roles: ['admin']
     },
     children: [
       {
         name: "SubjectList",
-        path: "/course/courses",
+        path: "/courses/subjects",
         component: () => import("@/views/admin/course/SubjectList"),
         meta: {
           title: "学科列表",
@@ -182,7 +191,7 @@ export const asyncRoutes = [
       },
       {
         name: "LessonList",
-        path: "/course/lessons",
+        path: "/courses/lessons",
         component: () => import("@/views/admin/course/LessonList"),
         meta: {
           title: "课程列表",
@@ -190,19 +199,21 @@ export const asyncRoutes = [
       },
     ],
   },
+  // score
   {
-    name: "Score",
-    path: "/score",
+    name: "Scores",
+    path: "/scores",
     component: Layout,
-    redirect: "/score/list",
+    redirect: "/scores/list",
     meta: {
       title: "成绩管理",
       icon: "el-icon-paperclip",
+      roles: ['admin']
     },
     children: [
       {
         name: "ScoreList",
-        path: "/score/list",
+        path: "/scores/list",
         component: () => import("@/views/admin/score/ScoreList"),
         meta: {
           title: "成绩列表",
@@ -210,10 +221,176 @@ export const asyncRoutes = [
       },
       {
         name: "ScoreNotList",
-        path: "score/notlist",
+        path: "scores/notlist",
         component: () => import("@/views/admin/score/ScoreNotList"),
         meta: {
           title: "挂科列表",
+        },
+      },
+    ],
+  },
+
+  // teacher student personal
+  {
+    name: "Personal",
+    path: "/personal",
+    component: Layout,
+    redirect: "/personal/info",
+    meta: {
+      title: "个人信息",
+      icon: "el-icon-user",
+      roles: ['teacher', 'student']
+    },
+    children: [
+      {
+        name: "UserInfo",
+        path: "/personal/info",
+        component: () => import("@/views/share/UserInfo"),
+        meta: {
+          title: "账号信息",
+          roles: ['teacher', 'student']
+        },
+      },
+      {
+        name: "UserTeacher",
+        path: "/personal/teacher",
+        component: () => import("@/views/teacher/personal/TeacherInfo"),
+        meta: {
+          title: "教师信息",
+          roles: ['teacher']
+        },
+      },
+      {
+        name: "UserStudent",
+        path: "/person/student",
+        component: () => import("@/views/student/personal/StudentInfo"),
+        meta: {
+          title: "学生信息",
+          roles: ['student']
+        },
+      },
+    ],
+  },
+
+  // teacher course
+  {
+    name: "TeacherCourse",
+    path: "/teacher/course",
+    component: Layout,
+    redirect: "/teacher/course",
+    meta: {
+      title: "课程信息",
+      icon: "el-icon-date",
+      roles: ['teacher']
+    },
+    alwaysShow: true,
+    children: [
+      {
+        name: "TeacherCourse",
+        path: "/teacher/course/list",
+        component: () => import("@/views/teacher/course/TeacherCourse"),
+        meta: {
+          title: "课程列表",
+          roles: ['teacher']
+        },
+      },
+    ],
+  },
+  // teacher score
+  {
+    name: "TeacherScore",
+    path: "/teacher/score",
+    component: Layout,
+    redirect: "/teacher/score",
+    meta: {
+      title: "成绩信息",
+      icon: "el-icon-paperclip",
+      roles: ['teacher']
+    },
+    alwaysShow: true,
+    children: [
+      {
+        name: "ClassScore",
+        path: "/teacher/score/list",
+        component: () => import("@/views/teacher/score/ClassScore"),
+        meta: {
+          title: "成绩列表",
+          roles: ['teacher']
+        },
+      },
+    ],
+  },
+  // student course
+  {
+    name: "StudentCourse",
+    path: "/student/course",
+    component: Layout,
+    redirect: "/student/course/list",
+    meta: {
+      title: "课程列表",
+      icon: "el-icon-date",
+      roles: ['student']
+    },
+    alwaysShow: true,
+    children: [
+      {
+        name: "StudentCourse",
+        path: "/student/course/list",
+        component: () => import("@/views/student/course/StudentCourse"),
+        meta: {
+          title: "课程列表",
+          roles: ['student']
+        },
+      },
+      {
+        name: "SelectCourse",
+        path: "/student/course/select",
+        component: () => import("@/views/student/course/SelectCourse"),
+        meta: {
+          title: "选修课程",
+          roles: ['student']
+        },
+      },
+      {
+        name: "RebuildCourse",
+        path: "/student/course/rebuild",
+        component: () => import("@/views/student/course/RebuildCourse"),
+        meta: {
+          title: "重修课程",
+          roles: ['student']
+        },
+      },
+    ],
+  },
+  // student score
+  {
+    name: "StudentScore",
+    path: "/student/score",
+    component: Layout,
+    redirect: "/student/score/list",
+    meta: {
+      title: "成绩信息",
+      icon: "el-icon-paperclip",
+      roles: ['student']
+    },
+    alwaysShow: true,
+    children: [
+      {
+        name: "ClassScore",
+        path: "/student/score/list",
+        component: () => import("@/views/student/score/StudentScore"),
+        meta: {
+          title: "成绩列表",
+          roles: ['student']
+        },
+      },
+      {
+        name: "FailList",
+        path: "/student/score/fail",
+        component: () => import("@/views/student/score/FailList"),
+        meta: {
+          title: "挂科信息",
+          roles: ['student']
         },
       },
     ],

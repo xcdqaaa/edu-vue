@@ -18,8 +18,7 @@
         </el-col>
       </el-row>
     </el-card>
-
-    <el-table :data="teacherList" border stripe>
+    <el-table :data="teacherList" border>
       <el-table-column type="selection" width="46"> </el-table-column>
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column
