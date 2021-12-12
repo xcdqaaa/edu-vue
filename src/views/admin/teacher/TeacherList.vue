@@ -2,6 +2,22 @@
   <div>
     <el-card>
       <el-row :gutter="25">
+        <el-col :span="4">
+          <el-select
+            v-model="college"
+            placeholder="请选择"
+            @change="getTeacherList"
+          >
+            <el-option
+              v-for="item in colleges"
+              :key="item.gid"
+              :label="item.gname"
+              :value="item.gid"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
+
         <el-col :span="10">
           <el-input
             placeholder="请输入内容"
@@ -25,16 +41,16 @@
       </el-row>
     </el-card>
 
+    <!-- 表格 -->
     <el-table :data="teacherList" border stripe>
       <el-table-column type="selection" width="46"> </el-table-column>
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column label="工号" prop="tid" sortable></el-table-column>
       <el-table-column label="姓名" prop="tname"></el-table-column>
       <el-table-column label="学院" prop="tcollege"></el-table-column>
-      <el-table-column label="操作">
-        
-      </el-table-column>
+      <el-table-column label="操作"> </el-table-column>
     </el-table>
+    <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -52,6 +68,7 @@
 export default {
   created() {
     this.getTeacherList();
+    this.getCollegeList();
   },
   data() {
     return {
@@ -64,17 +81,28 @@ export default {
       teacherList: [], // 用户列表
       total: 0, // 查询总数
       updateUser: {},
+      colleges: [],
+      college: "",
     };
   },
   methods: {
     // 获取所有学生
     getTeacherList() {
-      this.postRequest("teacher/teachers", this.queryInfo).then(response => {
+      this.postRequest(
+        "teacher/teachers?college=" + this.college,
+        this.queryInfo
+      ).then((response) => {
         // console.log(1111,data.obj.records);
-        const {data} = response
+        const { data } = response;
         this.teacherList = data.records;
         this.total = data.total;
         // console.log(2222,data.obj.records);
+      });
+    },
+    getCollegeList() {
+      this.getRequest("option/colleges").then((response) => {
+        const { data } = response;
+        this.colleges = data;
       });
     },
     handleSizeChange(newSize) {
