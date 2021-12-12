@@ -114,14 +114,6 @@ export const asyncRoutes = [
         },
       },
       {
-        name: "TeacherInfo",
-        path: "info",
-        component: () => import("@/views/admin/teacher/TeacherInfo"),
-        meta: {
-          title: "教师信息",
-        },
-      },
-      {
         name: "TeacherLesson",
         path: "lesson",
         component: () => import("@/views/admin/teacher/TeacherLesson"),
@@ -149,14 +141,6 @@ export const asyncRoutes = [
         component: () => import("@/views/admin/student/StudentList"),
         meta: {
           title: "学生列表",
-        },
-      },
-      {
-        name: "StudentInfo",
-        path: "/student/info",
-        component: () => import("@/views/admin/student/StudentInfo"),
-        meta: {
-          title: "学生信息",
         },
       },
       {
