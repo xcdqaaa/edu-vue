@@ -24,6 +24,7 @@
         </el-col>
       </el-row>
     </el-card>
+    <!-- 添加用户 -->
     <el-dialog
       title="添加用户"
       :visible.sync="userDialogVisible"
@@ -67,7 +68,7 @@
         >
       </span>
     </el-dialog>
-
+    <!-- 表格 -->
     <el-table :data="userList" border>
       <el-table-column type="selection" width="46" align="center">
       </el-table-column>
