@@ -107,22 +107,42 @@
       </span>
     </el-dialog>
     <!-- 教师详情信息 -->
-    <el-drawer
-      title="教师详情"
-      :visible.sync="drawer"
-      direction="ltr"
-      size="50%"
-    >
-      <el-descriptions title="用户信息">
-        <el-descriptions-item label="用户名">kooriookami</el-descriptions-item>
-        <el-descriptions-item label="手机号">18100000000</el-descriptions-item>
-        <el-descriptions-item label="居住地">苏州市</el-descriptions-item>
-        <el-descriptions-item label="备注">
-          <el-tag size="small">学校</el-tag>
-        </el-descriptions-item>
-        <el-descriptions-item label="联系地址"
-          >江苏省苏州市吴中区吴中大道 1188 号</el-descriptions-item
-        >
+    <el-drawer :visible.sync="drawer" direction="rtl" size="28%">
+      <el-descriptions
+        title="教师详情"
+        style="margin: 10px 16px; padding: 16px"
+        :column="1"
+      >
+        <el-descriptions-item label="性别">{{
+          userInfo.tgender
+        }}</el-descriptions-item>
+        <el-descriptions-item label="民族">{{
+          userInfo.tnation
+        }}</el-descriptions-item>
+        <el-descriptions-item label="电话">{{
+          userInfo.tphone
+        }}</el-descriptions-item>
+        <el-descriptions-item label="身份证号">{{
+          userInfo.tidentity
+        }}</el-descriptions-item>
+        <el-descriptions-item label="籍贯">{{
+          userInfo.tplace
+        }}</el-descriptions-item>
+        <el-descriptions-item label="政治面貌">{{
+          userInfo.tpolitics
+        }}</el-descriptions-item>
+        <el-descriptions-item label="学历">{{
+          userInfo.teducation
+        }}</el-descriptions-item>
+        <el-descriptions-item label="职称">{{
+          userInfo.trank
+        }}</el-descriptions-item>
+        <el-descriptions-item label="出生日期">{{
+          userInfo.tbirthday
+        }}</el-descriptions-item>
+        <el-descriptions-item label="入职日期">{{
+          userInfo.tentrance
+        }}</el-descriptions-item>
       </el-descriptions>
     </el-drawer>
     <!-- 表格 -->
@@ -159,7 +179,7 @@
               type="info"
               icon="el-icon-info"
               size="mini"
-              @click="drawer = true"
+              @click="showUserInfo(scope.row.uid)"
             ></el-button>
           </el-tooltip>
         </template>
@@ -208,6 +228,7 @@ export default {
       colleges: [],
       college: "",
       drawer: false,
+      userInfo: "",
       // 验证规则
       userFormRules: {
         tname: [{ required: true, message: "请输入用户名", trigger: "blur" }],
@@ -308,6 +329,20 @@ export default {
         // this.getTeacherList();
         this.userForm = data;
       });
+    },
+    getUserInfo(id) {
+      this.getRequest("/teacher/info/" + id).then((response) => {
+        // console.log("/getuser", data);
+        const { data } = response;
+        // this.userDialogVisible = false;
+        // this.getTeacherList();
+        this.userInfo = data;
+      });
+    },
+    showUserInfo(id) {
+      console.log("show", id);
+      this.drawer = true;
+      this.getUserInfo(id);
     },
     // 删除用户
     deleteUser(id) {
