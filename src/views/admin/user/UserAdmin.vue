@@ -19,7 +19,7 @@
 
         <el-col :span="4">
           <el-button type="primary" @click="userDialogVisible = true"
-            >添加用户</el-button
+            >添加管理员</el-button
           >
         </el-col>
       </el-row>
