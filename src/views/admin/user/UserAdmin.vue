@@ -18,7 +18,7 @@
         </el-col>
 
         <el-col :span="4">
-          <el-button type="primary" @click="addDialogVisible = true"
+          <el-button type="primary" @click="userDialogVisible = true"
             >添加用户</el-button
           >
         </el-col>
@@ -26,89 +26,48 @@
     </el-card>
     <el-dialog
       title="添加用户"
-      :visible.sync="addDialogVisible"
+      :visible.sync="userDialogVisible"
       width="36%"
-      @close="addDialogClosed"
+      @close="userDialogClosed"
     >
       <el-form
-        :model="addForm"
-        :rules="addFormRules"
-        ref="addFormRef"
+        :model="userForm"
+        :rules="userFormRules"
+        ref="userFormRef"
         label-width="70px"
       >
         <el-form-item label="账号" prop="account">
-          <el-input v-model="addForm.account" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="姓名" prop="account">
-          <el-input v-model="addForm.name" clearable></el-input>
+          <el-input
+            v-model="userForm.account"
+            placeholder="请输入内容"
+            clearable
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input v-model="addForm.password" clearable></el-input>
+          <el-input
+            v-model="userForm.password"
+            placeholder="请输入内容"
+            clearable
+          ></el-input>
         </el-form-item>
-        <el-form-item label="身份">
-          <template>
-            <el-select v-model="addForm.perm" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in roleList"
-                :key="index"
-                :label="item"
-                :value="index + 1"
-              >
-              </el-option>
-            </el-select>
-          </template>
+        <el-form-item label="邮箱">
+          <el-input
+            v-model="userForm.email"
+            placeholder="默认为空"
+            clearable
+          ></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
-        <el-button size="default" @click="addDialogVisible = false"
+        <el-button size="default" @click="userDialogVisible = false"
           >取消</el-button
         >
-        <el-button type="primary" size="default" @click="addUser"
+        <el-button type="primary" size="default" @click="doForUser"
           >确定</el-button
         >
       </span>
     </el-dialog>
-    <el-dialog
-      title="更新用户"
-      :visible.sync="updateDialogVisible"
-      width="36%"
-      @close="updateDialogClosed"
-    >
-      <el-form
-        :model="updateUser"
-        :rules="addFormRules"
-        ref="updateFormRef"
-        label-width="70px"
-      >
-        <el-form-item label="账号" prop="account">
-          <el-input v-model="updateUser.account" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input v-model="updateUser.password" clearable></el-input>
-        </el-form-item>
-        <el-form-item label="身份">
-          <template>
-            <el-select v-model="updateUser.perm" placeholder="请选择">
-              <el-option
-                v-for="(item, index) in roleList"
-                :key="index"
-                :label="item"
-                :value="index + 1"
-              >
-              </el-option>
-            </el-select>
-          </template>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button size="default" @click="updateDialogVisible = false"
-          >取消</el-button
-        >
-        <el-button type="primary" size="default" @click="doUpdateUser"
-          >确定</el-button
-        >
-      </span>
-    </el-dialog>
+
     <el-table :data="userList" border>
       <el-table-column type="selection" width="46" align="center">
       </el-table-column>
@@ -120,11 +79,7 @@
           {{ scope.row.email ? scope.row.email : "未设置" }}
         </template>
       </el-table-column>
-      <el-table-column label="角色">
-        <template slot-scope="scope">
-          {{ roleList[scope.row.role - 1] }}
-        </template>
-      </el-table-column>
+      <el-table-column label="角色"> 管理员 </el-table-column>
       <el-table-column label="状态">
         <template slot-scope="scope">
           <!-- {{scope}} -->
@@ -156,7 +111,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- style="margin-top:20px;" -->
+    <!-- 分页style="margin-top:20px;" -->
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -184,36 +139,23 @@ export default {
         pageNumber: 1,
         pageSize: 5,
       },
-      roleList: ["管理员", "教师", "学生"],
       userList: [], // 用户列表
       total: 0, // 查询总数
-      addDialogVisible: false, // 对话框状态
-      addForm: {
+      userDialogVisible: false, // 对话框状态
+      userForm: {
+        uid: "",
         account: "",
         password: "123456",
-        perm: 2,
-        name: "",
+        email: "",
       },
-      updateDialogVisible: false,
-      updateForm: {
-        account: "",
-        password: "123456",
-        perm: 2,
-      },
-      updateUser: {},
-      addFormRules: {
+      userFormRules: {
         account: [
           { required: true, message: "请输入用户账号", trigger: "blur" },
-          { min: 4, max: 20, message: "长度在不少于4", trigger: "blur" },
+          { min: 3, max: 20, message: "长度在不少于3", trigger: "blur" },
         ],
         password: [
           { required: true, message: "请输入用户密码", trigger: "blur" },
-          {
-            min: 6,
-            max: 20,
-            message: "长度在 6 到 20 个字符",
-            trigger: "blur",
-          },
+          { min: 6, max: 20, message: "长度不少于6", trigger: "blur" },
         ],
       },
     };
@@ -226,13 +168,14 @@ export default {
         console.log(1111, data);
         this.userList = data.records;
         this.total = data.total;
-        // console.log(2222,data.obj.records);
       });
     },
+    // 大小改变
     handleSizeChange(newSize) {
       this.queryInfo.pageSize = newSize;
       this.getUserList();
     },
+    // 当前页改变
     handleCurrentChange(newPage) {
       console.log(newPage);
       this.queryInfo.pageNumber = newPage;
@@ -240,49 +183,57 @@ export default {
     },
     // 改变用户状态
     userStateChange(userInfo) {
-      this.getRequest(
-        `userstate?id=${userInfo.uid}&state=${userInfo.state}`
-      ).then((data) => {
-        console.log("data" + data);
+      console.log("2222", userInfo);
+      this.getRequest(`user/state/${userInfo.uid}/${userInfo.state}`).then(
+        (data) => {
+          console.log("data" + data);
+        }
+      );
+    },
+    userDialogClosed() {
+      this.$refs.userFormRef.resetFields();
+    },
+    doForUser() {
+      this.$refs.userFormRef.validate((valid) => {
+        if (valid) {
+          console.log(this.userForm.uid, "5555");
+          if (this.userForm.uid == "") {
+            this.addUser();
+          } else {
+            this.doUpdateUser();
+          }
+        }
       });
-    },
-    addDialogClosed() {
-      this.$refs.addFormRef.resetFields();
-    },
-    updateDialogClosed() {
-      this.$refs.updateFormRef.resetFields();
     },
     // 添加用户
     addUser() {
-      this.$refs.addFormRef.validate((valid) => {
-        this.postRequest("/user", this.addForm).then((data) => {
-          console.log("adduser", data);
-          this.addDialogVisible = false;
-          this.getUserList();
-        });
+      this.postRequest("/user/admin", this.userForm).then((data) => {
+        console.log("adduser", data);
+        this.userDialogVisible = false;
+        this.getUserList();
       });
     },
 
     showUpdateUser(id) {
-      console.log(id);
       this.getUser(id);
-      console.log(id);
-      this.updateDialogVisible = true;
+      this.userDialogVisible = true;
     },
     doUpdateUser() {
-      this.postRequest("/updateuser", this.updateUser).then((data) => {
+      this.putRequest("/user/admin", this.userForm).then((data) => {
         console.log("/updateuser", data);
         this.updateUser = {};
-        this.updateDialogVisible = false;
+        this.userDialogVisible = false;
         this.getUserList();
+        console.log("ok updateuser");
       });
     },
-    getUser(id) {
-      this.getRequest("/getuser?id=" + id).then((data) => {
-        console.log("/getuser", data);
-        // this.addDialogVisible = false;
+    getUser(uid) {
+      this.getRequest("/user/admin/" + uid).then((response) => {
+        // console.log("/getuser", data);
+        const { data } = response;
+        // this.userDialogVisible = false;
         // this.getUserList();
-        this.updateUser = data.obj;
+        this.userForm = data;
       });
     },
     // 删除用户
@@ -293,7 +244,7 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.deleteRequest("user?id=" + id).then((data) => {
+          this.deleteRequest("user/" + id).then((data) => {
             console.log(data);
             this.getUserList();
           });
