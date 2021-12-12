@@ -1,46 +1,51 @@
 <template>
   <div>
+    <!-- 头部 -->
     <el-card>
       <el-row :gutter="25">
-        <!-- 班级列表 -->
-        <el-col :span="6">
+        <!-- 学院列表 -->
+        <el-col :span="4">
           <!-- 学院选择 -->
-          <el-cascader
-            v-model="value"
-            :options="options"
-            placeholder="选择班级"
-            :props="{ expandTrigger: 'hover' }"
-            @change="getStudentList"
-            style="width: 100%"
-          ></el-cascader>
+          <el-select
+            v-model="college"
+            placeholder="选择学院"
+            @change="getTeacherList"
+          >
+            <el-option
+              v-for="item in colleges"
+              :key="item.gid"
+              :label="item.gname"
+              :value="item.gid"
+            >
+            </el-option>
+          </el-select>
         </el-col>
-        <el-col :span="8">
+        <!-- 搜索框 -->
+        <el-col :span="10">
           <el-input
             placeholder="请输入内容"
             clearable
             v-model="queryInfo.query"
-            @clear="getStudentList"
+            @clear="getTeacherList"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
-              @click="getStudentList"
+              @click="getTeacherList"
             ></el-button>
           </el-input>
         </el-col>
-
         <!-- 添加按钮 -->
         <el-col :span="4">
           <el-button type="primary" @click="userDialogVisible = true"
-            >添加学生</el-button
+            >添加教师</el-button
           >
         </el-col>
       </el-row>
     </el-card>
-
-    <!-- 添加学生 -->
+    <!-- 添加修改界面 -->
     <el-dialog
-      title="添加学生"
+      title="添加用户"
       :visible.sync="userDialogVisible"
       width="36%"
       @close="userDialogClosed"
@@ -51,16 +56,16 @@
         ref="userFormRef"
         label-width="70px"
       >
-        <el-form-item label="学号" prop="sid">
+        <el-form-item label="工号" prop="tid">
           <el-input
-            v-model="userForm.sid"
+            v-model="userForm.tid"
             placeholder="请输入内容"
             clearable
           ></el-input>
         </el-form-item>
-        <el-form-item label="姓名" prop="sname">
+        <el-form-item label="姓名" prop="tname">
           <el-input
-            v-model="userForm.sname"
+            v-model="userForm.tname"
             placeholder="请输入内容"
             clearable
           ></el-input>
@@ -80,15 +85,16 @@
           ></el-input>
         </el-form-item>
         <!-- 学院选择 -->
-        <el-form-item label="班级" prop="cid" v-show="userForm.uid == ''">
-          <!-- 学院选择 -->
-          <el-cascader
-            v-model="userForm.values"
-            :options="options"
-            :props="{ expandTrigger: 'hover' }"
-            @change="getStudentList"
-            style="width: 100%"
-          ></el-cascader>
+        <el-form-item label="学院" prop="gid">
+          <el-select v-model="userForm.gid" placeholder="请选择">
+            <el-option
+              v-for="item in colleges"
+              :key="item.gid"
+              :label="item.gname"
+              :value="item.gid"
+            >
+            </el-option>
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -101,51 +107,53 @@
       </span>
     </el-dialog>
 
+    <!-- 教师详情信息 -->
     <el-drawer :visible.sync="drawer" direction="rtl" size="28%">
       <el-descriptions
-        title="学生详情"
+        title="教师详情"
         style="margin: 10px 16px; padding: 16px"
         :column="1"
       >
         <el-descriptions-item label="性别">{{
-          userInfo.sgender
+          userInfo.tgender
         }}</el-descriptions-item>
         <el-descriptions-item label="民族">{{
-          userInfo.snation
+          userInfo.tnation
         }}</el-descriptions-item>
         <el-descriptions-item label="电话">{{
-          userInfo.sphone
+          userInfo.tphone
         }}</el-descriptions-item>
         <el-descriptions-item label="身份证号">{{
-          userInfo.sidentity
+          userInfo.tidentity
         }}</el-descriptions-item>
         <el-descriptions-item label="籍贯">{{
-          userInfo.splace
+          userInfo.tplace
         }}</el-descriptions-item>
         <el-descriptions-item label="政治面貌">{{
-          userInfo.spolitics
+          userInfo.tpolitics
         }}</el-descriptions-item>
-        <el-descriptions-item label="学籍号">{{
-          userInfo.senrollment
+        <el-descriptions-item label="学历">{{
+          userInfo.teducation
+        }}</el-descriptions-item>
+        <el-descriptions-item label="职称">{{
+          userInfo.trank
         }}</el-descriptions-item>
         <el-descriptions-item label="出生日期">{{
-          userInfo.sbirthday
+          userInfo.tbirthday
         }}</el-descriptions-item>
         <el-descriptions-item label="入职日期">{{
-          userInfo.sentrance
+          userInfo.tentrance
         }}</el-descriptions-item>
       </el-descriptions>
     </el-drawer>
 
-    <el-table :data="studentList" border stripe>
-      <el-table-column type="selection" width="46" align="center">
-      </el-table-column>
+    <!-- 表格 -->
+    <el-table :data="teacherList" border stripe>
+      <el-table-column type="selection" width="46"> </el-table-column>
       <!-- <el-table-column type="index"></el-table-column> -->
-      <el-table-column label="学号" prop="sid" sortable></el-table-column>
-      <el-table-column label="姓名" prop="sname"></el-table-column>
-      <el-table-column label="班级" prop="sclass"></el-table-column>
-      <el-table-column label="专业" prop="smajor"></el-table-column>
-      <el-table-column label="学院" prop="scollege"></el-table-column>
+      <el-table-column label="工号" prop="tid" sortable></el-table-column>
+      <el-table-column label="姓名" prop="tname"></el-table-column>
+      <el-table-column label="学院" prop="tcollege"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <!-- 修改 -->
@@ -159,7 +167,7 @@
           </el-tooltip>
 
           <!-- 删除 -->
-          <el-tooltip content="删除学生" placement="top-start">
+          <el-tooltip content="删除教师" placement="top-start">
             <el-button
               type="danger"
               icon="el-icon-delete"
@@ -168,7 +176,7 @@
             ></el-button>
           </el-tooltip>
           <!-- 信息 -->
-          <el-tooltip content="学生详情" placement="top-start">
+          <el-tooltip content="教师详情" placement="top-start">
             <el-button
               type="info"
               icon="el-icon-info"
@@ -179,7 +187,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
@@ -197,8 +204,8 @@
 <script>
 export default {
   created() {
-    this.getStudentList();
-    this.getOptions();
+    this.getTeacherList();
+    this.getCollegeList();
   },
   data() {
     return {
@@ -211,18 +218,17 @@ export default {
       userDialogVisible: false,
       userForm: {
         uid: "",
-        sid: "",
-        sname: "",
+        tid: "",
+        tname: "",
         password: "123456",
         email: "",
-        values: [],
-        cid: "",
+        gid: "",
       },
-      studentList: [], // 用户列表
+      teacherList: [], // 用户列表
       total: 0, // 查询总数
       updateUser: {},
-      value: ["", "", this.cid],
-      options: [],
+      colleges: [],
+      college: "",
       drawer: false,
       userInfo: "",
       // 验证规则
@@ -242,45 +248,45 @@ export default {
   },
   methods: {
     // 获取所有学生
-    getStudentList() {
-      console.log(this.value, "2222");
+    getTeacherList() {
       this.postRequest(
-        "student/students?cid=" + (this.value[2] ? this.value[2] : ""),
+        "teacher/teachers?college=" + this.college,
         this.queryInfo
       ).then((response) => {
+        // console.log(1111,data.obj.records);
         const { data } = response;
-        this.studentList = data.records;
+        this.teacherList = data.records;
         this.total = data.total;
+        // console.log(2222,data.obj.records);
       });
-    },
-    getOptions() {
-      this.getRequest("/option/classes").then((response) => {
-        const { data } = response;
-        this.options = data;
-      });
-    },
-    handleSizeChange(newSize) {
-      this.queryInfo.pageSize = newSize;
-      this.getStudentList();
-    },
-    handleCurrentChange(newPage) {
-      console.log(newPage);
-      this.queryInfo.pageNumber = newPage;
-      this.getStudentList();
     },
     // dialog关闭
     userDialogClosed() {
       console.log("close");
       this.userForm = {
         uid: "",
-        sid: "",
-        sname: "",
+        tid: "",
+        tname: "",
         password: "123456",
         email: "",
-        values: [],
-        cid: "",
+        gid: "",
       };
       console.log("close ok");
+    },
+    getCollegeList() {
+      this.getRequest("option/colleges").then((response) => {
+        const { data } = response;
+        this.colleges = data;
+      });
+    },
+    handleSizeChange(newSize) {
+      this.queryInfo.pageSize = newSize;
+      this.getTeacherList();
+    },
+    handleCurrentChange(newPage) {
+      console.log(newPage);
+      this.queryInfo.pageNumber = newPage;
+      this.getTeacherList();
     },
 
     doForUser() {
@@ -297,11 +303,10 @@ export default {
     },
     // 添加用户
     addUser() {
-      this.userForm.cid = this.userForm.values[2];
-      this.postRequest("/user/student", this.userForm).then((data) => {
-        console.log("addstudent", data);
+      this.postRequest("/user/teacher", this.userForm).then((data) => {
+        console.log("adduser", data);
         this.userDialogVisible = false;
-        this.getStudentList();
+        this.getTeacherList();
       });
     },
 
@@ -310,28 +315,30 @@ export default {
       this.userDialogVisible = true;
     },
     doUpdateUser() {
-      //   this.userForm.cid = this.userForm.values[2];
-      this.putRequest("/user/student", this.userForm).then((data) => {
-        console.log("/updatestudent", data);
+      this.putRequest("/user/teacher", this.userForm).then((data) => {
+        console.log("/updateuser", data);
         this.updateUser = {};
         this.userDialogVisible = false;
-        this.getStudentList();
+        this.getTeacherList();
         console.log("ok updateuser");
       });
     },
     getUser(id) {
-      this.getRequest("/user/student/" + id).then((response) => {
+      this.getRequest("/user/teacher/" + id).then((response) => {
         // console.log("/getuser", data);
         const { data } = response;
+        // this.userDialogVisible = false;
+        // this.getTeacherList();
         this.userForm = data;
       });
     },
     getUserInfo(id) {
-      this.getRequest("/student/info/" + id).then((response) => {
-        console.log("/getuser", data);
+      this.getRequest("/teacher/info/" + id).then((response) => {
+        // console.log("/getuser", data);
         const { data } = response;
+        // this.userDialogVisible = false;
+        // this.getTeacherList();
         this.userInfo = data;
-        console.log("have", this.userInfo);
       });
     },
     showUserInfo(id) {
@@ -349,7 +356,7 @@ export default {
         .then(() => {
           this.deleteRequest("user/" + id).then((data) => {
             console.log(data);
-            this.getStudentList();
+            this.getTeacherList();
           });
         })
         .catch(() => {
