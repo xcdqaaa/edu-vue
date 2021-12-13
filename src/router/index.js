@@ -211,6 +211,14 @@ export const asyncRoutes = [
           title: "挂科列表",
         },
       },
+      {
+        name: "UploadList",
+        path: "scores/upload",
+        component: () => import("@/views/admin/score/upload-excel"),
+        meta: {
+          title: "上传导入",
+        },
+      },
     ],
   },
 
