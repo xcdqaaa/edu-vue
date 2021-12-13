@@ -29,8 +29,22 @@ export default {
         {
           //图标形式-柱状图
           type: "bar",
-          data: [10, 7, 33, 12, 48, 9, 29, 10, 44, 33, 22, 8],
-          color: "cyan",
+          data: [
+            15,
+            12,
+            14,
+            11,
+            {
+              value: 10,
+              itemStyle: {
+                color: "#ee6666",
+              },
+            },
+            19,
+            9,
+            4,
+          ],
+          color: "#7ed3f4",
         },
       ],
       //布局调试

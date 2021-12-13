@@ -26,14 +26,14 @@ export default {
       series: [
         {
           type: "line",
-          data: [10, 7, 33, 12, 48, 9, 29, 10, 44],
+          data: [0, 2, 0, 1, 1, , ,],
           //拐点的样式的设置
           itemStyle: {
             opacity: 0,
           },
           //线条的样式
           lineStyle: {
-            color: "purple",
+            color: "red",
           },
           //填充颜色设置
           areaStyle: {
@@ -46,7 +46,7 @@ export default {
               colorStops: [
                 {
                   offset: 0,
-                  color: "purple", // 0% 处的颜色
+                  color: "red", // 0% 处的颜色
                 },
                 {
                   offset: 1,

@@ -5,9 +5,9 @@
         <el-card>
           <!-- 第一个card -->
           <Detail title="绩点成绩" count="3.668">
-            <template slot="charts"> </template>
+            <template slot="charts">专业排名前 66%</template>
             <template slot="footer">
-              <span>专业排名前 60%</span>
+              <span>继续加油</span>
             </template>
           </Detail>
         </el-card>
@@ -15,12 +15,12 @@
       <el-col :span="6">
         <el-card>
           <!-- 第二个card -->
-          <Detail title="访问量" count="88460">
+          <Detail title="挂科数目" count="4">
             <template slot="charts">
               <lineCharts></lineCharts>
             </template>
             <template slot="footer">
-              <span>日访问量 1234</span>
+              <span>共 2 科目需要重修</span>
             </template>
           </Detail>
         </el-card>
@@ -28,12 +28,12 @@
       <el-col :span="6">
         <el-card>
           <!-- 第三个card -->
-          <Detail title="支付笔数" count="88460">
+          <Detail title="修读课程" count="10">
             <template slot="charts">
               <barCharts />
             </template>
             <template slot="footer">
-              <span>转换率64%</span>
+              <span>本学期共 10 门课程</span>
             </template>
           </Detail>
         </el-card>
