@@ -30,10 +30,20 @@
           </el-input>
         </el-col>
         <!-- 添加按钮 -->
-        <el-col :span="4">
+        <el-col :span="2">
           <el-button type="primary" @click="userDialogVisible = true"
             >添加学生</el-button
           >
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            :loading="downloadLoading"
+            type="primary"
+            icon="el-icon-document"
+            @click="handleDownload"
+          >
+            导出
+          </el-button>
         </el-col>
       </el-row>
     </el-card>
@@ -226,6 +236,7 @@ export default {
       options: [],
       drawer: false,
       userInfo: "",
+      downloadLoading: false,
       // 验证规则
       userFormRules: {
         tname: [{ required: true, message: "请输入用户名", trigger: "blur" }],
@@ -242,6 +253,35 @@ export default {
     };
   },
   methods: {
+    handleDownload() {
+      this.downloadLoading = true;
+      import("@/vendor/Export2Excel").then((excel) => {
+        const tHeader = ["sid", "sname", "sclass", "smajor", "scollege"];
+        const tnHeader = ["学号", "姓名", "班级", "专业", "学院"];
+        const filterVal = ["sid", "sname", "sclass", "smajor", "scollege"];
+        const list = this.studentList;
+        const data = this.formatJson(filterVal, list);
+        excel.export_json_to_excel({
+          header: tnHeader,
+          data,
+          filename: this.filename,
+          autoWidth: this.autoWidth,
+          bookType: this.bookType,
+        });
+        this.downloadLoading = false;
+      });
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map((v) =>
+        filterVal.map((j) => {
+          if (j === "timestamp") {
+            return parseTime(v[j]);
+          } else {
+            return v[j];
+          }
+        })
+      );
+    },
     // 获取所有学生
     getStudentList() {
       console.log(this.value, "2222");
