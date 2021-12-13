@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 头部行 -->
     <el-card>
       <el-row :gutter="25">
         <!-- 班级列表 -->
@@ -28,7 +29,6 @@
             ></el-button>
           </el-input>
         </el-col>
-
         <!-- 添加按钮 -->
         <el-col :span="4">
           <el-button type="primary" @click="userDialogVisible = true"
@@ -101,6 +101,7 @@
       </span>
     </el-dialog>
 
+    <!-- 学生侧边栏 -->
     <el-drawer :visible.sync="drawer" direction="rtl" size="28%">
       <el-descriptions
         title="学生详情"
@@ -179,7 +180,6 @@
         </template>
       </el-table-column>
     </el-table>
-
     <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
@@ -196,6 +196,7 @@
 
 <script>
 export default {
+  // 初始化信息
   created() {
     this.getStudentList();
     this.getOptions();
@@ -253,12 +254,14 @@ export default {
         this.total = data.total;
       });
     },
+    // 得到多级数据
     getOptions() {
       this.getRequest("/option/classes").then((response) => {
         const { data } = response;
         this.options = data;
       });
     },
+    // 分页响应函数
     handleSizeChange(newSize) {
       this.queryInfo.pageSize = newSize;
       this.getStudentList();
@@ -283,6 +286,7 @@ export default {
       console.log("close ok");
     },
 
+    // 分发添加还是修改
     doForUser() {
       this.$refs.userFormRef.validate((valid) => {
         if (valid) {
@@ -295,6 +299,7 @@ export default {
         }
       });
     },
+
     // 添加用户
     addUser() {
       this.userForm.cid = this.userForm.values[2];
@@ -304,11 +309,13 @@ export default {
         this.getStudentList();
       });
     },
-
+    // 显示修改
     showUpdateUser(id) {
       this.getUser(id);
       this.userDialogVisible = true;
     },
+
+    // 修改用户
     doUpdateUser() {
       //   this.userForm.cid = this.userForm.values[2];
       this.putRequest("/user/student", this.userForm).then((data) => {
@@ -319,6 +326,7 @@ export default {
         console.log("ok updateuser");
       });
     },
+    // 获取用户信息
     getUser(id) {
       this.getRequest("/user/student/" + id).then((response) => {
         // console.log("/getuser", data);
@@ -326,6 +334,7 @@ export default {
         this.userForm = data;
       });
     },
+    // 得到用户信息
     getUserInfo(id) {
       this.getRequest("/student/info/" + id).then((response) => {
         console.log("/getuser", data);
@@ -334,6 +343,8 @@ export default {
         console.log("have", this.userInfo);
       });
     },
+
+    // 展示用户信息
     showUserInfo(id) {
       console.log("show", id);
       this.drawer = true;
