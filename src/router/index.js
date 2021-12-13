@@ -123,7 +123,7 @@ export const asyncRoutes = [
       },
     ],
   },
-  // student
+  // admin student
   {
     name: "Student",
     path: "/students",
@@ -148,7 +148,7 @@ export const asyncRoutes = [
         path: "/students/lesson",
         component: () => import("@/views/admin/student/StudentLesson"),
         meta: {
-          title: "班级课程",
+          title: "学生课程",
         },
       },
     ],
