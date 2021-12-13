@@ -115,7 +115,7 @@ export const asyncRoutes = [
       },
       {
         name: "TeacherLesson",
-        path: "lesson",
+        path: "/teachers/lesson",
         component: () => import("@/views/admin/teacher/TeacherLesson"),
         meta: {
           title: "教师课程",
@@ -261,7 +261,7 @@ export const asyncRoutes = [
     name: "TeacherCourse",
     path: "/teacher/course",
     component: Layout,
-    redirect: "/teacher/course",
+    redirect: "/teacher/course/list",
     meta: {
       title: "课程信息",
       icon: "el-icon-date",
@@ -270,7 +270,7 @@ export const asyncRoutes = [
     alwaysShow: true,
     children: [
       {
-        name: "TeacherCourse",
+        name: "TeacherCourseList",
         path: "/teacher/course/list",
         component: () => import("@/views/teacher/course/TeacherCourse"),
         meta: {
