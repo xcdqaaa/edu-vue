@@ -7,7 +7,7 @@
           <el-select
             v-model="term"
             placeholder="选择学期"
-            @change="getLessonList"
+            @change="getCollegeList"
           >
             <el-option
               v-for="item in terms"
@@ -31,10 +31,49 @@
               @click="getLessonList"
             ></el-button>
           </el-input>
-        </el-col>
-    </el-card>
-
-   
+        </el-col> </el-row
+    ></el-card>
+    <el-table :data="lessonList" border>
+      <el-table-column type="selection" width="46"> </el-table-column>
+      <!-- <el-table-column type="index"></el-table-column> -->
+      <el-table-column
+        label="课程号"
+        prop="lid"
+        sortable
+        width="88"
+      ></el-table-column>
+      <el-table-column label="课程名" prop="lname"></el-table-column>
+      <el-table-column label="学科名" prop="lsubject"></el-table-column>
+      <el-table-column label="班级">
+        <template slot-scope="scope">
+          <!-- {{scope}} -->
+          <el-tag
+            style="margin: 2px"
+            v-for="item in scope.row.lclasses"
+            :key="item.cid"
+            :type="mtype[item.ctype - 1]"
+            size="small"
+          >
+            {{ item.cname }}
+          </el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="学分" prop="lcrs"></el-table-column>
+      <el-table-column label="学期" prop="lterm"></el-table-column>
+      <el-table-column label="地点" prop="lplace"></el-table-column>
+      <el-table-column label="时间" prop="ltime"></el-table-column>
+    </el-table>
+    <!-- 分页 -->
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="queryInfo.pageNumber"
+      :page-sizes="[5, 10, 20, 100]"
+      :page-size="queryInfo.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    >
+    </el-pagination>
   </div>
 </template>
 
