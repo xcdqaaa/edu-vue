@@ -2,23 +2,40 @@
   <div>
     <el-card>
       <el-row :gutter="25">
+        <!-- 学院列表 -->
+        <el-col :span="4">
+          <!-- 学院选择 -->
+          <el-select
+            v-model="term"
+            placeholder="选择学院"
+            @change="getLessonList"
+          >
+            <el-option
+              v-for="item in terms"
+              :key="item.pid"
+              :label="item.pname"
+              :value="item.pid"
+            >
+            </el-option>
+          </el-select>
+        </el-col>
         <el-col :span="10">
           <el-input
             placeholder="请输入内容"
             clearable
             v-model="queryInfo.query"
-            @clear="getTeacherList"
+            @clear="getLessonList"
           >
             <el-button
               slot="append"
               icon="el-icon-search"
-              @click="getTeacherList"
+              @click="getLessonList"
             ></el-button>
           </el-input>
         </el-col>
       </el-row>
     </el-card>
-    <el-table :data="teacherList" border>
+    <el-table :data="lessonList" border>
       <el-table-column type="selection" width="46"> </el-table-column>
       <!-- <el-table-column type="index"></el-table-column> -->
       <el-table-column
@@ -64,6 +81,7 @@
       </el-table-column>
       <el-table-column label="操作"> </el-table-column>
     </el-table>
+    <!-- 分页 -->
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -80,7 +98,8 @@
 <script>
 export default {
   created() {
-    this.getTeacherList();
+    this.getLessonList();
+    this.getTermList();
   },
   data() {
     return {
@@ -90,31 +109,42 @@ export default {
         pageNumber: 1,
         pageSize: 5,
       },
-      teacherList: [], // 用户列表
+      lessonList: [], // 用户列表
       total: 0, // 查询总数
       updateUser: {},
       mtype: ["", "success", "info", "warning", "danger"],
+      terms: [],
+      term: "",
     };
   },
   methods: {
-    // 获取所有学生
-    getTeacherList() {
-      this.postRequest("/course/lessons", this.queryInfo).then((response) => {
+    // 获取所有课程
+    getLessonList() {
+      this.postRequest(
+        "/course/lessons?term=" + this.term,
+        this.queryInfo
+      ).then((response) => {
         // console.log(1111,data.obj.records);
         const { data } = response;
-        this.teacherList = data.records;
+        this.lessonList = data.records;
         this.total = data.total;
-        // console.log(2222,data.obj.records);
+      });
+    },
+    // 获取学期列表
+    getTermList() {
+      this.getRequest("option/terms").then((response) => {
+        const { data } = response;
+        this.terms = data;
       });
     },
     handleSizeChange(newSize) {
       this.queryInfo.pageSize = newSize;
-      this.getTeacherList();
+      this.getLessonList();
     },
     handleCurrentChange(newPage) {
       console.log(newPage);
       this.queryInfo.pageNumber = newPage;
-      this.getTeacherList();
+      this.getLessonList();
     },
 
     showUpdateUser(id) {
@@ -128,14 +158,14 @@ export default {
         console.log("/updateuser", data);
         this.updateUser = {};
         this.updateDialogVisible = false;
-        this.getTeacherList();
+        this.getLessonList();
       });
     },
     getUser(id) {
       this.getRequest("/getuser?id=" + id).then((data) => {
         console.log("/getuser", data);
         // this.addDialogVisible = false;
-        // this.getTeacherList();
+        // this.getLessonList();
         this.updateUser = data.obj;
       });
     },
@@ -149,7 +179,7 @@ export default {
         .then(() => {
           this.deleteRequest("user?id=" + id).then((data) => {
             console.log(data);
-            this.getTeacherList();
+            this.getLessonList();
           });
         })
         .catch(() => {
