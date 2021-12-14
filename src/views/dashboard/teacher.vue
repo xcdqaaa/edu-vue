@@ -1,10 +1,27 @@
 <template>
-  <div>teacher</div>
+  <div>
+    <Card></Card>
+    <!-- <Sale></Sale> -->
+    <Observe></Observe>
+  </div>
 </template>
 
 <script>
-export default {};
+// import Sale from "./Sale";
+import Card from "./Card";
+import Observe from "./Observe";
+export default {
+  name: "",
+  components: {
+    Card,
+    // Sale,
+    Observe,
+  },
+  mounted() {
+    // this.$store.dispatch("getData");
+  },
+};
 </script>
 
-<style>
+<style scoped>
 </style>
