@@ -4,8 +4,8 @@ import { Message } from "element-ui";
 
 //请求拦截器
 axios.interceptors.request.use(config => {
-    if (window.sessionStorage.getItem('user')) {
-        config.headers['user'] = window.sessionStorage.getItem('user');
+    if (window.sessionStorage.getItem('token')) { // 在头部添加token信息
+        config.headers['token'] = window.sessionStorage.getItem('token');
     }
     return config;
 }, error => {

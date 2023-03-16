@@ -171,7 +171,7 @@ export default {
         this.total = data.total;
       });
     },
-    // 大小改变
+    // 页面展示数目改变
     handleSizeChange(newSize) {
       this.queryInfo.pageSize = newSize;
       this.getUserList();
@@ -194,10 +194,11 @@ export default {
     userDialogClosed() {
       this.$refs.userFormRef.resetFields();
     },
+    // 分发增加修改
     doForUser() {
       this.$refs.userFormRef.validate((valid) => {
         if (valid) {
-          console.log(this.userForm.uid, "5555");
+          // console.log(this.userForm.uid, "5555");
           if (this.userForm.uid == "") {
             this.addUser();
           } else {
@@ -215,10 +216,12 @@ export default {
       });
     },
 
+    // 展示修改用户界面
     showUpdateUser(id) {
       this.getUser(id);
       this.userDialogVisible = true;
     },
+    // 修改用户
     doUpdateUser() {
       this.putRequest("/user/admin", this.userForm).then((data) => {
         console.log("/updateuser", data);
@@ -228,6 +231,7 @@ export default {
         console.log("ok updateuser");
       });
     },
+    // 获取用户
     getUser(uid) {
       this.getRequest("/user/admin/" + uid).then((response) => {
         // console.log("/getuser", data);
